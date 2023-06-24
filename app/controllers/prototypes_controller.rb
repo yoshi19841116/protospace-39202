@@ -28,8 +28,8 @@ class PrototypesController < ApplicationController
     end
 
     def edit
-      unless user_signed_in?
-        redirect_to action: :index
+      unless current_user == @prototype.user
+        redirect_to root_path
       end
     end
 
@@ -51,7 +51,7 @@ class PrototypesController < ApplicationController
   private
 
   def prototype_params
-    params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
+    params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: prototype_user.id)
   end
 
   def set_prototype
